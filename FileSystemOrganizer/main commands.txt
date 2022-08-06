@@ -1,0 +1,4 @@
+//to make it globally so link with npm
+npm init -y
+and then
+npm link
