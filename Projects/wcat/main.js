@@ -8,6 +8,9 @@ switch (command) {
   case "-s":
     let i = 1;
     let n = inputArr.length;
+    if(fs.existsSync(inputArr[1]) && inputArr[2]== ">" ){
+      saveremovingspaces(inputArr[1],inputArr[3]);
+    }
     while (i < n) {
       processLineByLine(inputArr[i]);
       i++;
@@ -49,9 +52,12 @@ switch (command) {
   default:
     if (fs.existsSync(inputArr[0])) {
       if (inputArr[1] == ">") {
+        putfile1tofile2(inputArr[0],inputArr[2]);
       }
       if (inputArr[1] == ">>") {
-      } else {
+        appendfile1tofile2(inputArr[0],inputArr[2]);
+      } 
+      else {
         let i = 0;
         let n = inputArr.length;
         while (i < n) {
@@ -64,7 +70,41 @@ switch (command) {
     }
     break;
 }
-
+function saveremovingspaces(srcFile,destFile){
+  if(fs.existsSync(destFile)){
+    let flag=false;
+    fs.readFileSync(srcFile, "utf-8")
+      .split(/\r?\n/)
+      .forEach(function (line) {
+        if (line.length > 0) {
+          fs.appendFile(destFile, line);
+        }
+      });
+  }
+  else{
+    console.log("your file addres is not valid");
+  }
+}
+function putfile1tofile2(srcFile,destFile){
+  if(fs.existsSync(destFile)){
+    let data = fs.readFileSync(srcFile, 'utf8');
+    fs.writeFileSync(destFile, data);
+    console.log("done");
+  }
+  else{
+    console.log("your file doesn't exist")
+  }
+} 
+function appendfile1tofile2(srcFile,destFile){
+  if(fs.existsSync(destFile)){
+    let data = fs.readFileSync(srcFile, 'utf8');
+    fs.appendFile(destFile, data);
+  }
+  else{
+    console.log("your file doesn't exist")
+  }
+    
+}
 function pirntFileData(fileName) {
   try {
     const data = fs.readFileSync(fileName, "utf8");
