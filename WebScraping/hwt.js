@@ -12,18 +12,36 @@ function extractHTML(html){
     let $=cheerio.load(html);
     // let teamsArr= $(".ci-team-score");
     let teamsArr= $(".ci-team-score.ds-flex.ds-justify-between.ds-items-center.ds-text-typo-title.ds-mb-2");
+    let wteamName;
     for(let i=0;i<teamsArr.length;i++){
         let hasclass1=$(teamsArr[i]).hasClass("ds-opacity-50");
         if(hasclass1==false){
             let teamName=$(teamsArr[i]).find(".ds-text-tight-l");
-            let team=$(teamName).text();
-            let newhtml=$(teamName).html();
-            console.log(team);
-            // console.log(newhtml);
-            // let name=$(teamsArr[i]).text();
-            // console.log("winning team is ",name);
-            // let newhtml=$(teamsArr[i]).html();
-            // console.log("html is ",newhtml);
+            wteamName=$(teamName).text();
+            // let newhtml=$(teamName).html();
+            // console.log(team);
         }
     }
+    // let inningsArr=$(".ReactCollapse--collapse");
+    let inningsArr=$(".ds-bg-fill-content-prime.ds-rounded-lg");
+    // let htmlstr="";
+    for(let i=0;i<inningsArr.length;i++){
+        // let chtml=$(inningsArr[i]).html();
+        // htmlstr+=chtml;
+        //team names
+        let teamNameElen=$(inningsArr[i]).find(".ds-text-tight-s.ds-font-bold.ds-uppercase");
+        // let teamNameElen=$(inningsArr[i]).find(".ds-mt-3 .ds-text-tight-s.ds-font-bold.ds-uppercase");
+        let teamsName=teamNameElen.text();
+        teamsName=teamsName.split("INNINGS")[0];
+        teamsName=teamsName.trim();
+        // console.log(teamsName);
+        if(wteamName==teamsName){
+            // console.log(teamsName);
+            let tableElem=$(teamsName).find(".ds-w-full.ds-table.ds-table-md.ds-table-auto");
+            let tablerows=$(tableElem).find("tr");
+            let tablerowsdata=tablerows.text();
+            console.log(tablerowsdata);
+        }
+    }
+    // console.log(htmlstr);
 }
